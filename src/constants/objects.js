@@ -1,4 +1,5 @@
 export const OBJECT = Object.freeze({
+    zero: 0,
     minDate: 1,
     maxDate: 31,
     christmasDate: 25,
@@ -8,6 +9,11 @@ export const OBJECT = Object.freeze({
     increasedDiscountAmount: 100,
     eventAppliedAmount: 10000,
     overTwelveThousand: 120000,
+    santaBadge: 20000,
+    treeBadge: 10000,
+    starBadge: 5000,
+    Champagne: 25000,
+    weekDiscount: 2023,
 })
 
 export const MENUS = Object.freeze({
