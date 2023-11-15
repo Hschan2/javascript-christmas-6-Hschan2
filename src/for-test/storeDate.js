@@ -1,15 +1,28 @@
-import checkAllDateError from "../error/dateError";
+import { isInvalidDate, isNotNumber } from "../error/dateError";
 
 class storeDate {
-    #date
+    #dateNumber
 
-    setData(date) {
-        this.#date = date;
-        checkAllDateError(this.#date);
+    constructor(date) {
+        this.#validate(date);
+        this.#dateNumber = date;
+    }
+
+    #validate(date) {
+        this.#invalidNumber(date)
+        this.#invalidDate(date)
+    }
+
+    #invalidNumber(date) {
+        isNotNumber(date);
+    }
+
+    #invalidDate(date) {
+        isInvalidDate(date);
     }
 
     getDate() {
-        return Number(this.#date);
+        return this.#dateNumber;
     }
 }
 
