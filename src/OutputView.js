@@ -16,36 +16,36 @@ const OutputView = {
     },
 
     printBeforeDiscount(totalAmount) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printBeforeDiscount + `${totalAmount}원`);
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printBeforeDiscount + `${totalAmount.toLocaleString()}원`);
     },
 
     printPresentation(presentation) {
         MissionUtils.Console.print(OUTPUT_MESSAGE.printPresentation + presentation);
     },
 
-    printBenefit(benefits, presentationAmount, isEvent) {
+    printBenefit(benefits, isEvent) {
         const output = isEvent
             ? OUTPUT_MESSAGE.printBenefit +
-            (benefits.christmasBenefit !== 0 ? `크리스마스 디데이 할인: -${benefits.christmasBenefit}원` + LINE_SEPARATOR : '') +
-            (benefits.weekdayBenefit !== 0 ? `평일 할인: -${benefits.weekdayBenefit}원` + LINE_SEPARATOR : '') +
-            (benefits.weekendBenefit !== 0 ? `주말 할인: -${benefits.weekendBenefit}원` + LINE_SEPARATOR : '') +
-            (benefits.specialBenefit !== 0 ? `특별 할인: -${benefits.specialBenefit}원` + LINE_SEPARATOR : '') +
-            (presentationAmount !== 0 ? `증정 이벤트: -${presentationAmount}원` : '')
+            (benefits.christmasDiscount !== 0 ? `크리스마스 디데이 할인: -${benefits.christmasDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
+            (benefits.weekdayDiscount !== 0 ? `평일 할인: -${benefits.weekdayDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
+            (benefits.weekendDiscount !== 0 ? `주말 할인: -${benefits.weekendDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
+            (benefits.starSpecialDiscount !== 0 ? `특별 할인: -${benefits.starSpecialDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
+            (benefits.presentationEvent[1] !== 0 ? `증정 이벤트: -${benefits.presentationEvent[1].toLocaleString()}원` : '')
             : OUTPUT_MESSAGE.printBenefit + "없음";
 
         MissionUtils.Console.print(output);
     },
 
-    printAllBenefit(benefits, presentationAmount, isEvent) {
+    printAllBenefitAmount(allBenefitAmount, isEvent) {
         const output = isEvent
-            ? OUTPUT_MESSAGE.printAllBenefit + `${benefits.sumBenefit && `-${benefits.sumBenefit + presentationAmount}원`}`
+            ? OUTPUT_MESSAGE.printAllBenefit + `${allBenefitAmount && `-${allBenefitAmount.toLocaleString()}원`}`
             : OUTPUT_MESSAGE.printAllBenefit + "0원";
 
         MissionUtils.Console.print(output);
     },
 
-    printAfterDiscount(totalAmount, allBenefitsAmount) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printAfterDiscount + `${totalAmount - allBenefitsAmount}원`);
+    printAfterDiscount(totalAmount, benefits) {
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printAfterDiscount + `${(totalAmount - benefits.allBenefitAmount).toLocaleString()}원`);
     },
 
     printEventBadge(badge, isEvent) {
