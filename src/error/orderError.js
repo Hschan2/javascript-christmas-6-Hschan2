@@ -1,7 +1,7 @@
 import { ERROR_MESSAGE } from "../constants/messages";
 import { MENUS, OBJECT } from "../constants/objects";
 
-function isNotOneMore(order) {
+export function isNotOneMore(order) {
     const separateOrder = order.split(",");
 
     for (const eachMenu of separateOrder) {
@@ -11,7 +11,7 @@ function isNotOneMore(order) {
     }
 }
 
-function isNotIncludedMenus(order) {
+export function isNotIncludedMenus(order) {
     const separateOrder = order.split(",");
     const allMenus = Object.keys(MENUS)
         .flatMap(category => Object.keys(MENUS[category]));
@@ -23,7 +23,7 @@ function isNotIncludedMenus(order) {
     }
 }
 
-function isNotOrderForm(order) {
+export function isNotOrderForm(order) {
     const separateOrder = order.split(",");
     const menuFormatRegex = /^[a-zA-Z가-힣\s]+\-\d+$/;
 
@@ -32,7 +32,7 @@ function isNotOrderForm(order) {
     }
 }
 
-function isOverlapMenu(order) {
+export function isOverlapMenu(order) {
     const separateOrder = order.split(",");
     const menuMap = new Set();
 
@@ -44,7 +44,7 @@ function isOverlapMenu(order) {
     }
 }
 
-function isOrderBeverage(order) {
+export function isOrderBeverage(order) {
     const separateOrder = order.split(",");
     let isBeverageOrder = true;
 
@@ -61,7 +61,7 @@ function isOrderBeverage(order) {
     }
 }
 
-function isOverOrder(order) {
+export function isOverOrder(order) {
     const separateOrder = order.split(",");
     let orderedCount = 0;
 
@@ -73,13 +73,4 @@ function isOverOrder(order) {
     if (orderedCount > OBJECT.maxOrderCount) {
         throw new Error(`${ERROR_MESSAGE.prefix} ${ERROR_MESSAGE.InvalidUnderTwentyOrder}`);
     }
-}
-
-export default function checkAllOrderError(order) {
-    isNotOneMore(order);
-    isNotIncludedMenus(order);
-    isNotOrderForm(order);
-    isOverlapMenu(order);
-    isOrderBeverage(order);
-    isOverOrder(order);
 }
