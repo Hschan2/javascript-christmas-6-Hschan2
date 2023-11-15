@@ -1,16 +1,15 @@
 import OutputView from "./OutputView";
 import { OBJECT } from "./constants/objects";
-import calBadge from "./utils/calBadge";
 import calTotalAmount from "./utils/calTotalAmount";
-import getBenefitLists from "./utils/getBenefitLists";
+import getBenefitEvents from "./utils/getBenefitEvents";
 import getMenuCount from "./utils/getMenuCount";
-import getPresentation from "./utils/getPresentation";
 import inputValid from "./valid/inputValid";
 
 class App {
   #saveDate
   #saveOrder
   #saveTotalAmount
+  #possibleEvent
 
   constructor() {
   }
@@ -53,41 +52,55 @@ class App {
   }
 
   checkPossibleEvent() {
-    if (this.#saveTotalAmount < OBJECT.eventAppliedAmount) {
-      this.printNotAppliedEvent();
-    } else {
-      this.printAppliedEvent();
-    }
+    this.#possibleEvent = this.#saveTotalAmount < OBJECT.eventAppliedAmount ? false : true;
+    this.printMenu();
   }
 
-  printNotAppliedEvent() {
+  printMenu() {
     const menusCount = getMenuCount(this.#saveOrder);
-    const [presentation, amount] = getPresentation(this.#saveTotalAmount);
-    const benefits = getBenefitLists(this.#saveDate, this.#saveOrder);
-    const badge = calBadge(benefits.sumBenefit);
 
     OutputView.printMenu(menusCount);
-    OutputView.printBeforeDiscount(this.#saveTotalAmount);
-    OutputView.printPresentation(presentation);
-    OutputView.printBenefit(benefits, amount, false);
-    OutputView.printAllBenefit(benefits, false);
-    OutputView.printAfterDiscount(this.#saveTotalAmount, 0, 0);
-    OutputView.printEventBadge(badge, false);
+    this.printBeforeDiscount();
   }
 
-  printAppliedEvent() {
-    const menusCount = getMenuCount(this.#saveOrder);
-    const [presentation, amount] = getPresentation(this.#saveTotalAmount);
-    const benefits = getBenefitLists(this.#saveDate, this.#saveOrder);
-    const badge = calBadge(benefits.sumBenefit, amount);
-
-    OutputView.printMenu(menusCount);
+  printBeforeDiscount() {
     OutputView.printBeforeDiscount(this.#saveTotalAmount);
-    OutputView.printPresentation(presentation);
-    OutputView.printBenefit(benefits, amount, true);
-    OutputView.printAllBenefit(benefits, amount, true);
-    OutputView.printAfterDiscount(this.#saveTotalAmount, benefits.sumBenefit);
-    OutputView.printEventBadge(badge, true);
+    this.printPresentation();
+  }
+
+  printPresentation() {
+    const { presentationEvent } = getBenefitEvents(undefined, undefined, this.#saveTotalAmount);
+
+    OutputView.printPresentation(presentationEvent[0]);
+    this.printBenefit();
+  }
+
+  printBenefit() {
+    const benefitLists = getBenefitEvents(this.#saveDate, this.#saveOrder, this.#saveTotalAmount);
+
+    OutputView.printBenefit(benefitLists, this.#possibleEvent);
+    this.printAllBenefitAmount();
+  }
+
+  printAllBenefitAmount() {
+    const { allBenefitAmount, presentationEvent } = getBenefitEvents(this.#saveDate, this.#saveOrder, this.#saveTotalAmount);
+    const totalBenefitAmount = allBenefitAmount + presentationEvent[1];
+
+    OutputView.printAllBenefitAmount(totalBenefitAmount, this.#possibleEvent);
+    this.printAfterDiscount();
+  }
+
+  printAfterDiscount() {
+    const benefitLists = getBenefitEvents(this.#saveDate, this.#saveOrder, undefined);
+
+    OutputView.printAfterDiscount(this.#saveTotalAmount, benefitLists);
+    this.printEventBadge();
+  }
+
+  printEventBadge() {
+    const { badge } = getBenefitEvents(this.#saveDate, this.#saveOrder, this.#saveTotalAmount);
+
+    OutputView.printEventBadge(badge, this.#possibleEvent);
   }
 }
 
