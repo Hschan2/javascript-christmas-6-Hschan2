@@ -26,6 +26,12 @@ export const OUTPUT_MESSAGE = Object.freeze({
     printAllBenefit: "<총혜택 금액>" + LINE_SEPARATOR,
     printAfterDiscount: "<할인 후 예상 결제 금액>" + LINE_SEPARATOR,
     printEventBadge: "<12월 이벤트 배지>" + LINE_SEPARATOR,
+    printNothing: "없음",
+    printChristmasDiscount: "크리스마스 디데이 할인:",
+    printWeekdayDiscount: "평일 할인:",
+    printWeekendDiscount: "주말 할인:",
+    printSpecialDiscount: "특별 할인:",
+    printPresentationDiscount: "증정 이벤트:",
 })
 
 export const OUTPUT_PREVIEW = (date) => {
