@@ -1,21 +1,15 @@
-import InputView from "../InputView";
-import checkAllOrderError from "../error/orderError";
-import storeDate from "../model/storeDate";
-import storeOrder from "../model/storeOrder";
+import DateController from "../controller/DateController";
+import OrderController from "../controller/OrderController";
 
 const inputValid = {
     async validDate() {
-        const getDate = await InputView.readDate();
-        const validDate = new storeDate(getDate);
-
-        return Number(validDate.getDate());
+        const getDate = await DateController.readDate();
+        return getDate;
     },
 
     async validOrder() {
-        const getOrder = await InputView.readOrder();
-        const validOrder = new storeOrder(getOrder);
-
-        return validOrder.getOrder();
+        const getOrder = await OrderController.readOrder();
+        return getOrder;
     },
 }
 
