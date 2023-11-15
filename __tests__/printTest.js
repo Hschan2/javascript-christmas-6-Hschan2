@@ -1,7 +1,9 @@
-import calChristmasEventAmount from "../src/utils/calChristmasEventAmount";
-import { calSpecialEvent, calWeekdayEvent, calWeekendEvent } from "../src/utils/calDateEvent";
 import getMenuCount from "../src/utils/getMenuCount";
-import getPresentation from "../src/utils/getPresentation";
+import calPresentationEvent from "../src/utils/calPresentationEvent";
+import calChristmasEventAmount from "../src/utils/calChristmasEventAmount";
+import calWeekdayEvent from "../src/utils/calWeekdayEvent";
+import calWeekendEvent from "../src/utils/calWeekendEvent";
+import calSpecialEvent from "../src/utils/calSpecialEvent";
 import { EOL as LINE_SEPARATOR } from "os";
 
 describe('출력을 위한 값 테스트', () => {
@@ -12,13 +14,13 @@ describe('출력을 위한 값 테스트', () => {
     });
 
     test('증정 혜택 출력 확인하기', () => {
-        const [presentation, _] = getPresentation(150000);
+        const [presentation, _] = calPresentationEvent(150000);
 
         expect(presentation).toEqual("샴페인 1개");
     });
 
     test('증정 혜택 없음 출력 확인하기', () => {
-        const [presentation, _] = getPresentation(100000);
+        const [presentation, _] = calPresentationEvent(100000);
 
         expect(presentation).toEqual("없음");
     });
