@@ -1,4 +1,4 @@
-import { ABOUT_EVENT_DATE, MENUS } from "../constants/objects";
+import { ABOUT_EVENT_DATE, MENUS, OBJECT } from "../constants/objects";
 
 function calWeekendEvent(date, order) {
     const numberOfDate = Number(date);
@@ -14,7 +14,7 @@ function calWeekendEvent(date, order) {
         }
     }
 
-    return mainMenuCount * 2023;
+    return mainMenuCount * OBJECT.weekDiscount;
 }
 
 export default calWeekendEvent;
