@@ -1,5 +1,7 @@
-import { calSpecialEvent, calWeekdayEvent, calWeekendEvent } from "../src/utils/calDateEvent";
 import calTotalAmount from "../src/utils/calTotalAmount";
+import calWeekdayEvent from "../src/utils/calWeekdayEvent";
+import calWeekendEvent from "../src/utils/calWeekendEvent";
+import calSpecialEvent from "../src/utils/calSpecialEvent";
 
 describe('메뉴 구매 계산 테스트', () => {
     test('총 계산 금액 확인하기', () => {
