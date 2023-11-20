@@ -13,7 +13,8 @@ const OutputView = {
     },
 
     printMenu(menuCount) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printOrderedMenu + menuCount);
+        const output = Object.entries(menuCount).map(([menu, count]) => `${menu}: ${count}개`).join(LINE_SEPARATOR);
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printOrderedMenu + output);
     },
 
     printBeforeDiscount(totalAmount) {
