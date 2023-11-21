@@ -1,11 +1,12 @@
 import { isNotIncludedMenus, isNotOneMore, isNotOrderForm, isOrderBeverage, isOverOrder, isOverlapMenu } from "../error/orderError";
+import separateMenu from "../utils/separateMenu";
 
 class storeOrder {
     #orderData
 
     constructor(order) {
-        this.#validate(order);
-        this.#orderData = order;
+        this.#orderData = separateMenu(order);
+        this.#validate(this.#orderData);
     }
 
     #validate(order) {

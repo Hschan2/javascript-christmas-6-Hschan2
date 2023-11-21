@@ -6,8 +6,7 @@ class OrderController {
     static async readOrder() {
         try {
             const getOrder = await InputView.readOrder();
-            const separateOrder = separateMenu(getOrder);
-            const validatedOrder = new storeOrder(separateOrder);
+            const validatedOrder = new storeOrder(getOrder);
             return validatedOrder.getOrder();
         } catch (error) {
             throw error;
