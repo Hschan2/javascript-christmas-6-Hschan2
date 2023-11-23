@@ -7,19 +7,15 @@ import calTotalBenefitAmount from "./calTotalBenefitAmount";
 import calBadge from "./calBadge";
 
 function getBenefitEvents(date = 0, order = '', buyTotalAmount = 0) {
-    const christmasDiscount = calChristmasEventAmount(date);
-    const weekdayDiscount = calWeekdayEvent(date, order);
-    const weekendDiscount = calWeekendEvent(date, order);
-    const starSpecialDiscount = calSpecialEvent(date);
+    calChristmasEventAmount(date);
+    calWeekdayEvent(date, order);
+    calWeekendEvent(date, order);
+    calSpecialEvent(date);
     const presentationEvent = calPresentationEvent(buyTotalAmount);
-    const allBenefitAmount = calTotalBenefitAmount(christmasDiscount, weekdayDiscount, weekendDiscount, starSpecialDiscount);
+    const allBenefitAmount = calTotalBenefitAmount();
     const badge = calBadge(allBenefitAmount, presentationEvent);
 
     return {
-        christmasDiscount,
-        weekdayDiscount,
-        weekendDiscount,
-        starSpecialDiscount,
         presentationEvent,
         allBenefitAmount,
         badge

@@ -1,6 +1,5 @@
 import InputView from "../InputView";
 import storeOrder from "../model/storeOrder";
-import separateMenu from "../utils/separateMenu";
 
 class OrderController {
     static async readOrder() {

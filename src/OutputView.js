@@ -1,7 +1,7 @@
 import { MissionUtils } from "@woowacourse/mission-utils";
 import { OUTPUT_MESSAGE, OUTPUT_PREVIEW } from "./constants/messages";
 import { EOL as LINE_SEPARATOR } from "os";
-import { OBJECT } from "./constants/objects";
+import { EVENT_BENEFITS_RESULT, OBJECT } from "./constants/objects";
 
 const OutputView = {
     printHello() {
@@ -13,7 +13,7 @@ const OutputView = {
     },
 
     printMenu(menuCount) {
-        const output = Object.entries(menuCount).map(([menu, count]) => `${menu}: ${count}개`).join(LINE_SEPARATOR);
+        const output = Object.entries(menuCount).map(([menu, count]) => `${menu} ${count}개`).join(LINE_SEPARATOR);
         MissionUtils.Console.print(OUTPUT_MESSAGE.printOrderedMenu + output);
     },
 
@@ -25,29 +25,25 @@ const OutputView = {
         MissionUtils.Console.print(OUTPUT_MESSAGE.printPresentation + presentation);
     },
 
-    printBenefit(benefits, isEvent) {
+    printBenefit(isEvent) {
         const output = isEvent
             ? OUTPUT_MESSAGE.printBenefit +
-            (benefits.christmasDiscount !== 0 ? `${OUTPUT_MESSAGE.printChristmasDiscount} -${benefits.christmasDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
-            (benefits.weekdayDiscount !== 0 ? `${OUTPUT_MESSAGE.printWeekdayDiscount} -${benefits.weekdayDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
-            (benefits.weekendDiscount !== 0 ? `${OUTPUT_MESSAGE.printWeekendDiscount} -${benefits.weekendDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
-            (benefits.starSpecialDiscount !== 0 ? `${OUTPUT_MESSAGE.printSpecialDiscount} -${benefits.starSpecialDiscount.toLocaleString()}원` + LINE_SEPARATOR : '') +
-            (benefits.presentationEvent[1] !== 0 ? `${OUTPUT_MESSAGE.printPresentationDiscount} -${benefits.presentationEvent[1].toLocaleString()}원` : '')
+            Object.entries(EVENT_BENEFITS_RESULT).map(([benefitPrint, amount]) => `${benefitPrint} -${amount.toLocaleString()}원`).join(LINE_SEPARATOR)
             : OUTPUT_MESSAGE.printBenefit + OUTPUT_MESSAGE.printNothing;
 
         MissionUtils.Console.print(output);
     },
 
-    printAllBenefitAmount(allBenefitAmount, isEvent) {
+    printAllBenefitAmount(benefits, isEvent) {
         const output = isEvent
-            ? OUTPUT_MESSAGE.printAllBenefit + `${allBenefitAmount && `-${allBenefitAmount.toLocaleString()}원`}`
+            ? OUTPUT_MESSAGE.printAllBenefit + `${benefits.allBenefitAmount && `-${benefits.allBenefitAmount.toLocaleString()}원`}`
             : OUTPUT_MESSAGE.printAllBenefit + `${OBJECT.zero}원`;
 
         MissionUtils.Console.print(output);
     },
 
     printAfterDiscount(totalAmount, benefits) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printAfterDiscount + `${(totalAmount - benefits.allBenefitAmount).toLocaleString()}원`);
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printAfterDiscount + `${(totalAmount - benefits.allBenefitAmount + benefits.presentationEvent[1]).toLocaleString()}원`);
     },
 
     printEventBadge(badge, isEvent) {

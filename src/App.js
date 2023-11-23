@@ -2,14 +2,12 @@ import OutputView from "./OutputView";
 import { OBJECT } from "./constants/objects";
 import calTotalAmount from "./utils/calTotalAmount";
 import getBenefitEvents from "./utils/getBenefitEvents";
-import getMenuCount from "./utils/getMenuCount";
 import inputValid from "./valid/inputValid";
 
 class App {
   #saveDate
   #saveOrder
   #saveTotalAmount
-  #saveMenuCount
   #saveBenefits
   #possibleEvent
 
@@ -50,7 +48,6 @@ class App {
 
   getNeededValues() {
     this.#saveTotalAmount = calTotalAmount(this.#saveOrder);
-    this.#saveMenuCount = getMenuCount(this.#saveOrder);
     this.#saveBenefits = getBenefitEvents(this.#saveDate, this.#saveOrder, this.#saveTotalAmount);
     this.printAllContents();
   }
@@ -61,7 +58,7 @@ class App {
   }
 
   printMenu() {
-    OutputView.printMenu(this.#saveMenuCount);
+    OutputView.printMenu(this.#saveOrder);
     this.printBeforeDiscount();
   }
 
@@ -76,14 +73,12 @@ class App {
   }
 
   printBenefit() {
-    OutputView.printBenefit(this.#saveBenefits, this.#possibleEvent);
+    OutputView.printBenefit(this.#possibleEvent);
     this.printAllBenefitAmount();
   }
 
   printAllBenefitAmount() {
-    const totalBenefitAmount = this.#saveBenefits.allBenefitAmount + this.#saveBenefits.presentationEvent[1];
-
-    OutputView.printAllBenefitAmount(totalBenefitAmount, this.#possibleEvent);
+    OutputView.printAllBenefitAmount(this.#saveBenefits, this.#possibleEvent);
     this.printAfterDiscount();
   }
 

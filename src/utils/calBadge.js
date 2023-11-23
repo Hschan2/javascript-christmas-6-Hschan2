@@ -1,7 +1,7 @@
 import { OBJECT } from "../constants/objects";
 
-function calBadge(benefitAmount, presentationAmount) {
-    const allBenefitAmounts = benefitAmount + presentationAmount[1];
+function calBadge(benefitAmount, presentation) {
+    const allBenefitAmounts = benefitAmount + presentation[1];
 
     return allBenefitAmounts >= OBJECT.santaBadge
         ? '산타'

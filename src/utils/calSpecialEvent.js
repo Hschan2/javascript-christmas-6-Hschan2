@@ -1,11 +1,10 @@
-import { ABOUT_EVENT_DATE, OBJECT } from "../constants/objects";
+import { OUTPUT_MESSAGE } from "../constants/messages";
+import { ABOUT_EVENT_DATE, EVENT_BENEFITS_RESULT, OBJECT } from "../constants/objects";
 
 function calSpecialEvent(date) {
     if (ABOUT_EVENT_DATE.SpecialEvent.includes(date)) {
-        return OBJECT.minDiscountAmount;
+        EVENT_BENEFITS_RESULT[OUTPUT_MESSAGE.printSpecialDiscount] = OBJECT.minDiscountAmount;
     }
-
-    return 0;
 }
 
 export default calSpecialEvent;
