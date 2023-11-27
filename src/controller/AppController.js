@@ -1,16 +1,16 @@
 import OutputView from "../OutputView";
-import storeBenefits from "../model/storeBenefits";
+import Benefits from "../domain/Benefits";
 import inputValid from "../valid/inputValid";
 
 class AppController {
     #inputView
     #outputView
     #eventPlanner
+    #eventPossible
 
     constructor() {
         this.#inputView = inputValid;
         this.#outputView = OutputView;
-        this.#benefitsSet = new Set();
     }
 
     async christmasStart() {
@@ -24,7 +24,7 @@ class AppController {
 
     async #readDate() {
         try {
-            this.#saveDate = await this.#inputView.validDate();
+            return await this.#inputView.validDate();
         } catch (error) {
             this.#outputView.printError(error);
             return this.#readDate();
@@ -33,7 +33,7 @@ class AppController {
 
     async #readOrder() {
         try {
-            this.#saveOrder = await this.#inputView.validOrder();
+            return await this.#inputView.validOrder();
         } catch (error) {
             this.#outputView.printError(error);
             return this.#readOrder();
@@ -42,7 +42,9 @@ class AppController {
 
     #showEventPlanner(date, order) {
         this.#outputView.printPreview(date);
-        this.#eventPlanner = storeBenefits(date, order);
+        this.#eventPlanner = new Benefits(date, order);
+        this.#eventPossible = this.#eventPlanner.getAllOrderAmount() < 10000 ? false : true;
+        this.#outputView.printBenefitsList(order, this.#eventPlanner, this.#eventPossible);
     }
 }
 
