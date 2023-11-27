@@ -1,7 +1,8 @@
 import { MissionUtils } from "@woowacourse/mission-utils";
-import { OUTPUT_MESSAGE, OUTPUT_PREVIEW } from "./constants/messages";
+import { OUTPUT_MESSAGE, OUTPUT_PREVIEW, UNITS } from "./constants/messages";
 import { EOL as LINE_SEPARATOR } from "os";
-import { EVENT_BENEFITS_RESULT, OBJECT } from "./constants/objects";
+import { OBJECT } from "./constants/objects";
+import convertThousandUnits from "./utils/convertUnit";
 
 const OutputView = {
     printHello() {
@@ -12,44 +13,52 @@ const OutputView = {
         MissionUtils.Console.print(OUTPUT_PREVIEW(date));
     },
 
-    printMenu(menuCount) {
-        const output = Object.entries(menuCount).map(([menu, count]) => `${menu} ${count}개`).join(LINE_SEPARATOR);
+    printBenefitsList(order, benefits, isPossible) {
+        this.printMenuList(order);
+        this.printBeforeDiscountAmount(benefits.getAllOrderAmount());
+        this.printPresentationResult(benefits.getPresentation());
+        this.printBenefitResult(benefits, isPossible);
+        this.printAllBenefitsAmount(benefits, isPossible);
+        this.printAfterDiscountAmount(benefits);
+        this.printBadgeResult(benefits, isPossible);
+    },
+
+    printMenuList(order) {
+        const output = Object.entries(order).map(([menu, count]) => `${menu} ${count}${UNITS.UnitOfSize}`).join(LINE_SEPARATOR);
         MissionUtils.Console.print(OUTPUT_MESSAGE.printOrderedMenu + output);
     },
 
-    printBeforeDiscount(totalAmount) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printBeforeDiscount + `${totalAmount.toLocaleString()}원`);
+    printBeforeDiscountAmount(totalAmount) {
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printBeforeDiscount + convertThousandUnits(totalAmount));
     },
 
-    printPresentation(presentation) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printPresentation + presentation);
+    printPresentationResult(presentation) {
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printPresentation + presentation[0]);
     },
 
-    printBenefit(isEvent) {
+    printBenefitResult(EventList, isEvent) {
         const output = isEvent
             ? OUTPUT_MESSAGE.printBenefit +
-            Object.entries(EVENT_BENEFITS_RESULT).map(([benefitPrint, amount]) => `${benefitPrint} -${amount.toLocaleString()}원`).join(LINE_SEPARATOR)
+            Object.entries(EventList.getBenefitsList()).map(([benefitPrint, amount]) => `${benefitPrint} -${convertThousandUnits(amount)}`).join(LINE_SEPARATOR)
+            + LINE_SEPARATOR
+            + (EventList.getPresentation()[1] !== 0 ? `${OUTPUT_MESSAGE.printPresentationDiscount} -${convertThousandUnits(EventList.getPresentation()[1])}` : '')
             : OUTPUT_MESSAGE.printBenefit + OUTPUT_MESSAGE.printNothing;
 
         MissionUtils.Console.print(output);
     },
 
-    printAllBenefitAmount(benefits, isEvent) {
-        const output = isEvent
-            ? OUTPUT_MESSAGE.printAllBenefit + `${benefits.allBenefitAmount && `-${benefits.allBenefitAmount.toLocaleString()}원`}`
-            : OUTPUT_MESSAGE.printAllBenefit + `${OBJECT.zero}원`;
+    printAllBenefitsAmount(benefits, isEvent) {
+        const output = OUTPUT_MESSAGE.printAllBenefit + (isEvent ? `${benefits.getAllBenefitsAmount() && `-${convertThousandUnits(benefits.getAllBenefitsAmount())}`}` : convertThousandUnits(OBJECT.zero));
 
         MissionUtils.Console.print(output);
     },
 
-    printAfterDiscount(totalAmount, benefits) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printAfterDiscount + `${(totalAmount - benefits.allBenefitAmount + benefits.presentationEvent[1]).toLocaleString()}원`);
+    printAfterDiscountAmount(benefits) {
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printAfterDiscount + convertThousandUnits(benefits.getAfterDiscount()));
     },
 
-    printEventBadge(badge, isEvent) {
-        const output = isEvent
-            ? OUTPUT_MESSAGE.printEventBadge + badge
-            : OUTPUT_MESSAGE.printEventBadge + OUTPUT_MESSAGE.printNothing;
+    printBadgeResult(benefits, isEvent) {
+        const output = OUTPUT_MESSAGE.printEventBadge + (isEvent ? benefits.getBadge() : OUTPUT_MESSAGE.printNothing);
 
         MissionUtils.Console.print(output);
     },
