@@ -27,7 +27,7 @@ class AppController {
             return await this.#inputView.validDate();
         } catch (error) {
             this.#outputView.printError(error);
-            return this.#readDate();
+            return await this.#readDate();
         }
     }
 
@@ -36,7 +36,7 @@ class AppController {
             return await this.#inputView.validOrder();
         } catch (error) {
             this.#outputView.printError(error);
-            return this.#readOrder();
+            return await this.#readOrder();
         }
     }
 

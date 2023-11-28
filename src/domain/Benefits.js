@@ -14,7 +14,7 @@ class Benefits {
         this.#getBenefits(date, order);
         this.#allAmount = new Amount(order);
         this.#presentationResult = this.#presentationEvent(this.#allAmount);
-        this.#badgeResult = this.#badge(this.#benefitsList, this.#presentationResult);
+        this.#badgeResult = this.#badge(this.#benefitsList);
         this.#benefitsAmount = this.#calBenefitsAmount(this.#benefitsList);
     }
 
@@ -65,21 +65,21 @@ class Benefits {
 
     #presentationEvent(allAmount) {
         if (allAmount.getAllOrderAmount() >= OBJECT.overTwelveThousand) {
-            return ['샴페인 1개', OBJECT.Champagne];
+            this.#benefitsList[OUTPUT_MESSAGE.printPresentationDiscount] = OBJECT.Champagne;
+            return '샴페인 1개'
         }
-        return ['없음', OBJECT.zero];
+        this.#benefitsList[OUTPUT_MESSAGE.printPresentationDiscount] = OBJECT.zero;
+        return '없음';
     }
 
-    #badge(allBenefitAmount, presentationAmount) {
+    #badge(allBenefitAmount) {
         const getBenefitsAmount = Object.values(allBenefitAmount).reduce((acc, value) => acc + value, 0);
-        const getPresentationAmount = presentationAmount[1];
-        const sumAllBenefitAmount = getBenefitsAmount + getPresentationAmount;
 
-        return sumAllBenefitAmount >= OBJECT.santaBadge
+        return getBenefitsAmount >= OBJECT.santaBadge
             ? '산타'
-            : sumAllBenefitAmount >= OBJECT.treeBadge
+            : getBenefitsAmount >= OBJECT.treeBadge
                 ? '트리'
-                : sumAllBenefitAmount >= OBJECT.starBadge
+                : getBenefitsAmount >= OBJECT.starBadge
                     ? '별'
                     : '없음';
     }
@@ -101,12 +101,13 @@ class Benefits {
     }
 
     getAllBenefitsAmount() {
-        const [_, amount] = this.#presentationResult;
-        return this.#benefitsAmount + amount;
+        return this.#benefitsAmount;
     }
 
     getAfterDiscount() {
-        return this.#allAmount.getAllOrderAmount() - this.#benefitsAmount;
+        const sumExceptPresentation = Object.values(this.#benefitsList).reduce((sum, value, index) => Object.keys(this.#benefitsList)[index] !== OUTPUT_MESSAGE.printPresentationDiscount ? sum + value : sum, 0);
+
+        return this.#allAmount.getAllOrderAmount() - sumExceptPresentation;
     }
 
     getBadge() {

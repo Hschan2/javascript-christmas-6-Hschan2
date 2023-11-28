@@ -33,16 +33,11 @@ const OutputView = {
     },
 
     printPresentationResult(presentation) {
-        MissionUtils.Console.print(OUTPUT_MESSAGE.printPresentation + presentation[0]);
+        MissionUtils.Console.print(OUTPUT_MESSAGE.printPresentation + presentation);
     },
 
     printBenefitResult(EventList, isEvent) {
-        const output = isEvent
-            ? OUTPUT_MESSAGE.printBenefit +
-            Object.entries(EventList.getBenefitsList()).map(([benefitPrint, amount]) => `${benefitPrint} -${convertThousandUnits(amount)}`).join(LINE_SEPARATOR)
-            + LINE_SEPARATOR
-            + (EventList.getPresentation()[1] !== 0 ? `${OUTPUT_MESSAGE.printPresentationDiscount} -${convertThousandUnits(EventList.getPresentation()[1])}` : '')
-            : OUTPUT_MESSAGE.printBenefit + OUTPUT_MESSAGE.printNothing;
+        const output = OUTPUT_MESSAGE.printBenefit + (isEvent ? Object.entries(EventList.getBenefitsList()).map(([benefitPrint, amount]) => amount !== 0 ? `${benefitPrint} -${convertThousandUnits(amount)}` : '').join(LINE_SEPARATOR) : OUTPUT_MESSAGE.printNothing);
 
         MissionUtils.Console.print(output);
     },
