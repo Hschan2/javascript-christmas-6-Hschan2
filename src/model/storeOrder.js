@@ -10,12 +10,12 @@ class storeOrder {
     }
 
     #validate(order) {
-        this.#invalidOneMore(order)
-        this.#invalidIncludedMenus(order)
-        this.#invalidOrderForm(order)
-        this.#validOverlapMenu(order)
-        this.#validOrderBeverage(order)
-        this.#validOverOrder(order)
+        this.#invalidOneMore(order);
+        this.#invalidIncludedMenus(order);
+        this.#invalidOrderForm(order);
+        this.#validOverlapMenu(order);
+        this.#validOrderBeverage(order);
+        this.#validOverOrder(order);
     }
 
     #invalidOneMore(order) {
