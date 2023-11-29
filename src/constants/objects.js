@@ -44,3 +44,13 @@ export const ABOUT_EVENT_DATE = Object.freeze({
     SpecialEvent: [3, 10, 17, 24, 25, 31],
     WeekendEvent: [1, 2, 8, 9, 15, 16, 22, 23, 29, 30],
 })
+
+export const UNITS = Object.freeze({
+    UnitOfAmount: "원",
+    UnitOfSize: "개"
+})
+
+export const WEEK_EVENT_MENUS = Object.freeze({
+    Dessert: "dessert",
+    Main: "main"
+})
