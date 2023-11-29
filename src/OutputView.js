@@ -1,7 +1,7 @@
 import { MissionUtils } from "@woowacourse/mission-utils";
-import { OUTPUT_MESSAGE, OUTPUT_PREVIEW, UNITS } from "./constants/messages";
+import { OUTPUT_MESSAGE, OUTPUT_PREVIEW } from "./constants/messages";
 import { EOL as LINE_SEPARATOR } from "os";
-import { OBJECT } from "./constants/objects";
+import { OBJECT, UNITS } from "./constants/objects";
 import convertThousandUnits from "./utils/convertUnit";
 
 const OutputView = {

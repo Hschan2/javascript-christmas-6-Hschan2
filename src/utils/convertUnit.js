@@ -1,4 +1,4 @@
-import { UNITS } from "../constants/messages";
+import { UNITS } from "../constants/objects";
 
 const convertThousandUnits = (amount) => {
     return amount.toLocaleString() + UNITS.UnitOfAmount;

@@ -1,5 +1,5 @@
 import { OUTPUT_MESSAGE } from "../constants/messages";
-import { ABOUT_EVENT_DATE, MENUS, OBJECT } from "../constants/objects";
+import { ABOUT_EVENT_DATE, MENUS, OBJECT, WEEK_EVENT_MENUS } from "../constants/objects";
 import Amount from "./Amount";
 
 class Benefits {
@@ -32,27 +32,24 @@ class Benefits {
     }
 
     #weekdayEvent(date, order) {
-        let dessertMenuCount = 0;
-
-        if (!ABOUT_EVENT_DATE.WeekendEvent.includes(date)) {
-            Object.entries(order).map(([menu, count]) => {
-                if (MENUS.dessert.hasOwnProperty(menu)) dessertMenuCount += 1 * count;
-            });
-            if (dessertMenuCount !== 0) {
-                this.#benefitsList[OUTPUT_MESSAGE.printWeekdayDiscount] = dessertMenuCount * OBJECT.weekDiscount;
-            }
-        }
+        this.#handleDayEvent(date, order, WEEK_EVENT_MENUS.Dessert, OUTPUT_MESSAGE.printWeekdayDiscount);
     }
 
     #weekendEvent(date, order) {
-        let mainMenuCount = 0;
+        this.#handleDayEvent(date, order, WEEK_EVENT_MENUS.Main, OUTPUT_MESSAGE.printWeekendDiscount);
+    }
 
-        if (ABOUT_EVENT_DATE.WeekendEvent.includes(date)) {
-            Object.entries(order).map(([menu, count]) => {
-                if (MENUS.main.hasOwnProperty(menu)) mainMenuCount += 1 * count;
+    #handleDayEvent(date, order, menuType, discountMessage) {
+        let menuCount = 0;
+
+        if ((menuType === WEEK_EVENT_MENUS.Dessert && !ABOUT_EVENT_DATE.WeekendEvent.includes(date)) ||
+            (menuType === WEEK_EVENT_MENUS.Main && ABOUT_EVENT_DATE.WeekendEvent.includes(date))) {
+            Object.entries(order).forEach(([menu, count]) => {
+                if (MENUS[menuType].hasOwnProperty(menu)) menuCount += 1 * count;
             });
-            if (mainMenuCount !== 0) {
-                this.#benefitsList[OUTPUT_MESSAGE.printWeekendDiscount] = mainMenuCount * OBJECT.weekDiscount;
+
+            if (menuCount !== 0) {
+                this.#benefitsList[discountMessage] = menuCount * OBJECT.weekDiscount;
             }
         }
     }
