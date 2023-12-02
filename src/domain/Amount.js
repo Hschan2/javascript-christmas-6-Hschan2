@@ -7,17 +7,19 @@ class Amount {
         this.#allOrderAmount = this.#sumAllOrderAmount(order);
     }
 
+    #sumMenuCategory(menuCategory, order) {
+        return Object.entries(order)
+            .filter(([menu]) => MENUS[menuCategory].hasOwnProperty(menu))
+            .reduce((total, [menu, count]) => total + MENUS[menuCategory][menu] * count, 0);
+    }
+
     #sumAllOrderAmount(order) {
-        let totalAmount = 0;
+        const appetizerAmount = this.#sumMenuCategory('appetizer', order);
+        const mainAmount = this.#sumMenuCategory('main', order);
+        const dessertAmount = this.#sumMenuCategory('dessert', order);
+        const beverageAmount = this.#sumMenuCategory('beverage', order);
 
-        Object.entries(order).map(([menu, count]) => {
-            if (MENUS.appetizer.hasOwnProperty(menu)) totalAmount += MENUS.appetizer[menu] * count;
-            if (MENUS.main.hasOwnProperty(menu)) totalAmount += MENUS.main[menu] * count;
-            if (MENUS.dessert.hasOwnProperty(menu)) totalAmount += MENUS.dessert[menu] * count;
-            if (MENUS.beverage.hasOwnProperty(menu)) totalAmount += MENUS.beverage[menu] * count;
-        });
-
-        return totalAmount;
+        return appetizerAmount + mainAmount + dessertAmount + beverageAmount;
     }
 
     getAllOrderAmount() {
