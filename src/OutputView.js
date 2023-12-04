@@ -37,7 +37,7 @@ const OutputView = {
     },
 
     printBenefitResult(EventList, isEvent) {
-        const output = OUTPUT_MESSAGE.printBenefit + (isEvent ? Object.entries(EventList.getBenefitsList()).map(([benefitPrint, amount]) => amount !== 0 ? `${benefitPrint} -${convertThousandUnits(amount)}` : '').join(LINE_SEPARATOR) : OUTPUT_MESSAGE.printNothing);
+        const output = OUTPUT_MESSAGE.printBenefit + (isEvent ? Object.entries(EventList.getBenefitsList()).map(([benefitPrint, amount]) => amount !== 0 ? `${benefitPrint} -${convertThousandUnits(amount)}` : '').filter(Boolean).join(LINE_SEPARATOR) : OUTPUT_MESSAGE.printNothing);
 
         MissionUtils.Console.print(output);
     },
