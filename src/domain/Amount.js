@@ -22,6 +22,10 @@ class Amount {
         return appetizerAmount + mainAmount + dessertAmount + beverageAmount;
     }
 
+    static calculateBenefitsAmount(benefitsList) {
+        return Object.values(benefitsList).reduce((acc, value) => acc + value, 0);
+    }
+
     getAllOrderAmount() {
         return this.#allOrderAmount;
     }
