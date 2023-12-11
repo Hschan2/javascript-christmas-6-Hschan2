@@ -1,5 +1,15 @@
+import AppController from "./controller/AppController";
+
 class App {
-  async run() {}
+  #eventController
+
+  constructor() {
+    this.#eventController = new AppController();
+  }
+
+  async run() {
+    await this.#eventController.christmasStart();
+  }
 }
 
 export default App;
